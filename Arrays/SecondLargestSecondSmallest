@@ -1,0 +1,106 @@
+/*
+    SECOND LARGEST AND SECOND SMALLEST IN AN ARRAY
+Example 1:
+Input: [1,2,4,7,7,5]
+Output: Second Smallest : 2
+	Second Largest : 5
+Explanation: The elements are as follows 1,2,3,5,7,7 and hence second largest of these is 5 and second smallest is 2
+
+Example 2:
+Input: [1]
+Output: Second Smallest : -1
+	Second Largest : -1
+Explanation: Since there is only one element in the array, it is the largest and smallest element present in the array. There is no second largest or second smallest element present.
+*/
+
+/* Answer */
+
+1. Brute force approach ---
+    - We can sort the array 
+	-  secondLargest = arr [n-2];
+	Time Complexity  --- O(NlogN)
+
+2. Better Approach ---
+      This can be done in two steps
+	     1step  : Find largest element in an array 
+		 2step  : Intialize secondLargest = -1  and compare with each element of array  and element should != largest
+	Time Complexity = O(N)
+		           
+	Code :  int largest = arr[0];
+	        int secondLargest = -1 ;     // secondLargest = INT_MIN  ; --- In case array contains -ve number
+	        for (int i =0;i<n;i++){                                           // O(n)
+	           if(arr[i] > largest){
+	            largest = arr[i];
+	           }
+	        }
+	 
+	     	for (int j =0 ;j<n ;j++){
+	    	    if( arr[j] > secondLargest && arr[j] != largest){            // O(n)
+	     	       secondLargest = arr[j];
+	     	   }
+	    	}
+																			//O(2n)  ->   O(n)
+
+3. Optimal approach -------
+
+      1. largest = arr[0] , secondLargest = -1;
+	  2. Compare largest to each of element of array and if it is less then store secondLargest to current value of largest
+	  3. secondLargest = largest(previous one);   largest = arr[i];
+	  4. 
+
+	Code : 
+        
+	for (int i =1 ;i<n ;i++){
+		if(arr[i]> largest){
+			secondLargest = largest ;    
+			largest = arr[i];
+		}
+		else if( arr[i]<largest && a[i]> secondLargest){
+			secondLargest =a[i];
+		}
+	}
+
+
+
+// To find secondLargest and secondSmallest in an array 
+
+
+int secondLargest(vector<int> &a , int n ){
+    int largest =a[0];
+    int sLargest= -1;
+    for (int i =0;i<n ;i++){
+        if(a[i]>largest){
+            sLargest = largest;
+            largest=a[i];
+        }
+        else if ( a[i]< largest && a[i]>sLargest){
+            sLargest=a[i];
+        }
+    }
+    return sLargest;
+}
+
+int secondSmallest(vector<int> &a, int n) {
+    int smallest = a[0];
+    int secondSmallestNum =INT_MAX;
+    
+    for (int i = 1; i < n; i++) {
+        if (a[i] < smallest) {
+            secondSmallestNum = smallest;
+            smallest = a[i];
+        } else if (a[i] < secondSmallestNum && a[i] != smallest) {
+            secondSmallestNum = a[i];   
+        }
+    }
+    return secondSmallestNum;
+}
+
+ 
+
+
+vector<int> getSecondOrderElements(int n, vector<int> a) {
+    int sLargest=  secondLargest(a,n);
+    int sSmallest= secondSmallest(a,n);
+    return {sLargest , sSmallest};
+
+}
